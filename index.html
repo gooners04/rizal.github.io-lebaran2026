@@ -26,12 +26,12 @@
             touch-action: manipulation;
         }
 
-        /* 2. EFEK LAMPION (KEMBALI LAGI!) */
+        /* 2. EFEK LAMPION */
         body::before, body::after {
             content: "🏮";
             position: absolute;
             top: -10px;
-            font-size: 30px; /* Ukuran pas di HP */
+            font-size: 30px;
             animation: swing 3s ease-in-out infinite alternate;
             filter: drop-shadow(0 0 10px var(--accent));
             z-index: 5;
@@ -44,7 +44,7 @@
             to { transform: rotate(10deg); }
         }
 
-        /* 3. WRAPPER AMPLOP RESPONSIVE */
+        /* 3. WRAPPER AMPLOP */
         .wrapper {
             position: relative;
             width: 90%; 
@@ -64,7 +64,6 @@
             border: 1px solid rgba(212, 175, 55, 0.3);
         }
 
-        /* Flap dinamis di HP */
         .flap {
             position: absolute; top: 0; width: 0; height: 0;
             border-left: 45vw solid transparent; 
@@ -75,7 +74,6 @@
             z-index: 4;
         }
 
-        /* Batas flap untuk layar lebar/desktop */
         @media (min-width: 500px) {
             .flap {
                 border-left: 225px solid transparent;
@@ -92,7 +90,7 @@
             border-radius: 0 0 15px 15px;
         }
 
-        /* 4. KARTU UCAPAN (FONT & UKURAN HP-FRIENDLY) */
+        /* 4. KARTU UCAPAN & PROTEKSI FOTO */
         .card {
             position: absolute; top: 10%; left: 5%;
             width: 90%; height: 85%;
@@ -105,50 +103,28 @@
             text-align: center;
             overflow: hidden;
             border: 1px solid #ddd;
+            /* Anti seleksi teks */
+            -webkit-touch-callout: none;
+            user-select: none;
         }
 
         .card img {
-            width: 70px; height: 70px; /* Ukuran pas di HP */
+            width: 70px; height: 70px;
             border-radius: 50%;
             border: 3px solid var(--accent);
             object-fit: cover;
             margin-bottom: 10px;
+            /* PROTEKSI FOTO: Anti Drag & Sentuh */
+            pointer-events: none;
+            -webkit-user-drag: none;
         }
 
-        /* Judul Selamat */
-        .card h1 { 
-            color: var(--primary); 
-            margin: 0; 
-            font-size: 20px; 
-            font-weight: bold;
-        }
-        
-        /* Judul Hijriah */
-        .card h2 { 
-            color: var(--accent); 
-            margin: 5px 0 0 0; 
-            font-size: 16px; 
-            font-weight: bold;
-        }
+        .card h1 { color: var(--primary); margin: 0; font-size: 20px; font-weight: bold; }
+        .card h2 { color: var(--accent); margin: 5px 0 0 0; font-size: 16px; font-weight: bold; }
+        .card p { font-size: 12px; color: #444; margin-top: 15px; line-height: 1.4; max-width: 95%; }
+        .closing-name { font-weight: bold; color: var(--primary); margin-top: 20px; font-size: 14px; }
 
-        /* Isi Ucapan */
-        .card p { 
-            font-size: 12px; 
-            color: #444; 
-            margin-top: 15px; 
-            line-height: 1.4; 
-            max-width: 95%;
-        }
-
-        /* Nama Penutup */
-        .closing-name {
-            font-weight: bold; 
-            color: var(--primary); 
-            margin-top: 20px; 
-            font-size: 14px;
-        }
-
-        /* 5. SAAT AMPLOP DIBUKA */
+        /* 5. ANIMASI BUKA */
         .wrapper.open .flap { transform: rotateX(180deg); z-index: 1; }
         .wrapper.open .card {
             transform: translateY(-55%);
@@ -158,11 +134,9 @@
             padding-top: 30px;
         }
 
-        /* Tombol Hint */
         .hint { 
             position: absolute; bottom: -50px; width: 100%; text-align: center; 
             color: var(--accent); font-weight: bold; font-size: 14px;
-            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
         }
 
         /* CSS Partikel Kembang Api */
@@ -172,29 +146,10 @@
             border-radius: 50%;
             z-index: 1000;
             pointer-events: none;
-
-        /* Kunci foto agar tidak bisa di-drag atau diseleksi */
-        .card img {
-            -webkit-user-drag: none;
-            -khtml-user-drag: none;
-            -moz-user-drag: none;
-            -o-user-drag: none;
-            user-select: none;
-            pointer-events: none; /* Ini paling ampuh: foto jadi 'tembus pandang' buat kursor/sentuhan */
-        }
-
-        /* Matikan menu klik kanan di seluruh kartu */
-        .card {
-            -webkit-touch-callout: none; /* Matikan menu copy/save di iOS Safari */
-            -webkit-user-select: none;   /* Chrome/Safari */
-            -moz-user-select: none;      /* Firefox */
-            -ms-user-select: none;       /* IE/Edge */
-            user-select: none;           /* Standard */
-        
         }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;"> <!-- Matikan klik kanan di seluruh body -->
 
     <audio id="lebaranMusic" loop>
         <source src="takbiran.mp3" type="audio/mpeg">
@@ -204,17 +159,14 @@
         <div class="flap"></div>
         <div class="envelope"></div>
         <div class="card">
-            <img src="FOTO_KAMU.jpg" alt="Foto Kamu">
-            
+            <img src="FOTO_KAMU.jpg" alt="Foto">
             <h1>Selamat Idul Fitri</h1>
             <h2>1447 Hijriah</h2>
-            
             <p>
                 Taqabbalallahu Minna Wa Minkum.<br>
                 Semoga di tahun ini kita diberkahi kebahagiaan, kesehatan, dan hati yang kembali suci.
                 Mohon Maaf Lahir & Batin.
             </p>
-            
             <p class="closing-name">✨ Muhammad Afrizal ✨</p>
         </div>
         <div class="pocket"></div>
@@ -229,78 +181,31 @@
         wrapper.addEventListener('click', () => {
             wrapper.classList.toggle('open');
             isOpen = !isOpen;
-
             if (isOpen) {
-                // Musik Berputar (setelah klik di HP)
-                audio.play().catch(e => console.log("Audio play blocked."));
-                
-                // JALANKAN KEMBANG API (Burst Effect)
-                // Titik ledakan dari posisi amplop (tengah layar)
+                audio.play().catch(e => console.log("Audio blocked"));
                 launchFirework();
                 setTimeout(launchFirework, 250);
                 setTimeout(launchFirework, 500);
-                
             } else {
                 audio.pause();
                 audio.currentTime = 0;
             }
         });
 
-        // JAVASCRIPT KEMBANG API (EMAS & WARNA-WARNI)
         function launchFirework() {
-            // Kombinasi warna emas, hijau, putih
             const colors = ['#d4af37', '#ffd700', '#059669', '#ffffff', '#fbbf24'];
             const particleCount = 40;
-            
-            // Titik ledakan (tengah layar)
             const centerX = window.innerWidth / 2;
             const centerY = window.innerHeight / 2;
 
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'firework-particle';
-                
-                // Set warna acak
                 particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                
-                // Set posisi awal (ledakan dari tengah)
                 particle.style.left = centerX + 'px';
                 particle.style.top = centerY + 'px';
-                
-                // Memberikan efek cahaya berpendar
                 particle.style.boxShadow = `0 0 10px ${particle.style.backgroundColor}`;
-                
                 document.body.appendChild(particle);
 
-                // Menghitung arah ledakan acak (360 derajat)
                 const angle = Math.random() * Math.PI * 2;
-                // Kekuatan ledakan acak
-                const velocity = Math.random() * 150 + 50; 
-                // Menghitung koordinat tujuan ledakan
-                const destinationX = Math.cos(angle) * velocity * 1.5;
-                const destinationY = Math.sin(angle) * velocity * 1.5;
-
-                const animation = particle.animate([
-                    { 
-                        // Posisi awal: Tengah, ukuran normal, muncul
-                        transform: 'translate(0, 0) scale(1)', 
-                        opacity: 1 
-                    },
-                    { 
-                        // Posisi akhir: Menyebar, ukuran mengecil, menghilang
-                        transform: `translate(${destinationX}px, ${destinationY}px) scale(0)`, 
-                        opacity: 0 
-                    }
-                ], {
-                    // Durasi acak agar terlihat alami
-                    duration: 1200 + Math.random() * 800,
-                    easing: 'cubic-bezier(0, .9, .57, 1)' // Efek melambat di akhir
-                });
-
-                // Hapus partikel dari DOM setelah animasi selesai
-                animation.onfinish = () => particle.remove();
-            }
-        }
-    </script>
-</body>
-</html>
+                const velocity = Math.random() * 150 +
