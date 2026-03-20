@@ -172,6 +172,25 @@
             border-radius: 50%;
             z-index: 1000;
             pointer-events: none;
+
+        /* Kunci foto agar tidak bisa di-drag atau diseleksi */
+        .card img {
+            -webkit-user-drag: none;
+            -khtml-user-drag: none;
+            -moz-user-drag: none;
+            -o-user-drag: none;
+            user-select: none;
+            pointer-events: none; /* Ini paling ampuh: foto jadi 'tembus pandang' buat kursor/sentuhan */
+        }
+
+        /* Matikan menu klik kanan di seluruh kartu */
+        .card {
+            -webkit-touch-callout: none; /* Matikan menu copy/save di iOS Safari */
+            -webkit-user-select: none;   /* Chrome/Safari */
+            -moz-user-select: none;      /* Firefox */
+            -ms-user-select: none;       /* IE/Edge */
+            user-select: none;           /* Standard */
+        
         }
     </style>
 </head>
