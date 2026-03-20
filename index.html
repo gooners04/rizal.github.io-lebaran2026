@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Idul Fitri 2026 - Masterpiece</title>
+    <title>Idul Fitri 2026</title>
     <style>
         :root {
             --primary: #064e3b;
@@ -11,7 +11,6 @@
             --white: #ffffff;
         }
 
-        /* 1. LAYOUT UTAMA */
         body, html {
             margin: 0; padding: 0;
             height: 100%; width: 100%;
@@ -23,21 +22,21 @@
             touch-action: manipulation;
         }
 
-        /* 2. LAMPION */
+        /* LAMPION */
         body::before, body::after {
             content: "🏮";
             position: absolute; top: -10px; font-size: 30px;
             animation: swing 3s ease-in-out infinite alternate;
-            z-index: 5;
+            z-index: 20;
         }
         body::before { left: 10%; transform-origin: top; }
         body::after { right: 10%; transform-origin: top; }
         @keyframes swing { from { transform: rotate(-10deg); } to { transform: rotate(10deg); } }
 
-        /* 3. WRAPPER AMPLOP */
+        /* WRAPPER AMPLOP */
         .wrapper {
             position: relative;
-            width: 90%; max-width: 400px; 
+            width: 90%; max-width: 380px; 
             aspect-ratio: 3 / 2; 
             perspective: 1000px;
             cursor: pointer;
@@ -45,10 +44,11 @@
         }
 
         .envelope {
-            position: relative; width: 100%; height: 100%;
+            position: absolute; width: 100%; height: 100%;
             background: var(--primary);
             border-radius: 0 0 15px 15px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            z-index: 3; /* Di atas kartu saat tertutup */
         }
 
         .flap {
@@ -58,14 +58,14 @@
             border-top: 30vw solid #086d51;
             transform-origin: top;
             transition: transform 0.6s ease;
-            z-index: 4;
+            z-index: 6; /* Paling depan saat tertutup */
         }
 
-        @media (min-width: 450px) {
+        @media (min-width: 420px) {
             .flap {
-                border-left: 200px solid transparent;
-                border-right: 200px solid transparent;
-                border-top: 135px solid #086d51;
+                border-left: 190px solid transparent;
+                border-right: 190px solid transparent;
+                border-top: 130px solid #086d51;
             }
         }
 
@@ -73,54 +73,63 @@
             position: absolute; top: 0; width: 100%; height: 100%;
             background: var(--primary);
             clip-path: polygon(0 0, 50% 55%, 100% 0, 100% 100%, 0 100%);
-            z-index: 3;
+            z-index: 5; /* Di depan kartu agar kartu terlihat keluar dari dalam */
             border-radius: 0 0 15px 15px;
         }
 
-        /* 4. KARTU & PROTEKSI FOTO */
+        /* KARTU UCAPAN (PERBAIKAN DISINI) */
         .card {
-            position: absolute; top: 10%; left: 5%;
-            width: 90%; height: 85%;
+            position: absolute; 
+            top: 5%; left: 5%;
+            width: 90%; height: 90%;
             background: var(--white);
             border-radius: 10px;
-            z-index: 2;
-            transition: all 0.8s ease;
+            z-index: 4; /* Diantara envelope dan pocket */
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex; flex-direction: column; align-items: center;
-            padding: 15px; box-sizing: border-box;
+            padding: 20px; box-sizing: border-box;
             text-align: center;
-            -webkit-user-select: none; user-select: none; /* Anti Copy Teks */
+            opacity: 0; /* Sembunyi total saat tertutup */
+            transform: translateY(0);
+            pointer-events: none;
         }
 
         .card img {
-            width: 75px; height: 75px;
+            width: 70px; height: 70px;
             border-radius: 50%;
             border: 3px solid var(--accent);
             object-fit: cover;
             margin-bottom: 10px;
-            /* PROTEKSI FOTO KERAS */
-            pointer-events: none; 
+            pointer-events: none; /* Anti Download */
             -webkit-user-drag: none;
-            touch-action: none;
         }
 
         .card h1 { color: var(--primary); margin: 0; font-size: 18px; }
-        .card h2 { color: var(--accent); margin: 5px 0; font-size: 16px; }
-        .card p { font-size: 12px; color: #444; line-height: 1.4; }
-        .closing { font-weight: bold; color: var(--primary); margin-top: 10px; font-size: 13px; }
+        .card h2 { color: var(--accent); margin: 5px 0; font-size: 15px; }
+        .card p { font-size: 11px; color: #444; line-height: 1.5; margin: 10px 0; }
+        .closing { font-weight: bold; color: var(--primary); font-size: 13px; margin-top: auto; }
 
-        /* 5. ANIMASI BUKA */
-        .wrapper.open .flap { transform: rotateX(180deg); z-index: 1; }
+        /* ANIMASI SAAT DIBUKA */
+        .wrapper.open .flap { 
+            transform: rotateX(180deg); 
+            z-index: 1; 
+        }
+
         .wrapper.open .card {
-            transform: translateY(-60%);
-            height: 180%;
+            opacity: 1; /* Muncul saat dibuka */
+            transform: translateY(-65%); /* Naik ke atas */
+            height: 160%;
             z-index: 5;
             box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            pointer-events: all;
         }
 
         .hint { 
-            position: absolute; bottom: -40px; width: 100%; text-align: center; 
-            color: var(--accent); font-size: 12px; font-weight: bold;
+            position: absolute; bottom: -50px; width: 100%; text-align: center; 
+            color: var(--accent); font-size: 13px; font-weight: bold;
+            animation: blink 1.5s infinite;
         }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
         .firework-particle {
             position: fixed; width: 4px; height: 4px; border-radius: 50%;
@@ -128,7 +137,7 @@
         }
     </style>
 </head>
-<body oncontextmenu="return false;"> <!-- Lock Klik Kanan -->
+<body oncontextmenu="return false;">
 
     <audio id="lebaranMusic" loop>
         <source src="takbiran.mp3" type="audio/mpeg">
@@ -137,20 +146,21 @@
     <div class="wrapper" id="mainWrapper">
         <div class="flap"></div>
         <div class="envelope"></div>
+        
         <div class="card">
-            <!-- Ganti nama file foto disini -->
             <img src="FOTO_KAMU.jpg" alt="Profile">
             <h1>Selamat Idul Fitri</h1>
             <h2>1447 Hijriah</h2>
-            <p style="font-size: 16px; color: #444; margin-top: 30px; line-height: 1.5;">
+            <p>
                 Taqabbalallahu Minna Wa Minkum.<br>
-                Semoga di tahun 2026 ini kita diberkahi kebahagiaan, kesehatan, dan hati yang kembali suci.
-            <p style="font-weight: bold; color: var(--primary); margin-top: 30-px;">Mohon Maaf Lahir & Batin</p>
-            <p style="font-size: 24px; color: #064e3b; margin-top: 30px; font-weight: bold;">
-            ✨ Muhammad Afrizal ✨
+                Semoga di hari yang suci ini, kita diberkahi kesehatan dan kebahagiaan hati.<br>
+                Mohon Maaf Lahir & Batin.
+            </p>
+            <p class="closing">✨ Muhammad Afrizal ✨</p>
         </div>
+
         <div class="pocket"></div>
-        <div class="hint">KLIK AMPLOP UNTUK MEMBUKA ✉️</div>
+        <div class="hint">TAP UNTUK MEMBUKA ✉️</div>
     </div>
 
     <script>
@@ -172,7 +182,7 @@
 
         function launchFirework() {
             const colors = ['#d4af37', '#ffd700', '#ffffff', '#059669'];
-            for (let i = 0; i < 30; i++) {
+            for (let i = 0; i < 35; i++) {
                 const p = document.createElement('div');
                 p.className = 'firework-particle';
                 p.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
@@ -180,14 +190,14 @@
                 document.body.appendChild(p);
                 
                 const angle = Math.random() * Math.PI * 2;
-                const dist = Math.random() * 150 + 50;
+                const dist = Math.random() * 180 + 50;
                 const x = Math.cos(angle) * dist;
                 const y = Math.sin(angle) * dist;
 
                 p.animate([
                     { transform: 'translate(0,0) scale(1)', opacity: 1 },
                     { transform: `translate(${x}px,${y}px) scale(0)`, opacity: 0 }
-                ], { duration: 1000 + Math.random()*500 }).onfinish = () => p.remove();
+                ], { duration: 1200 + Math.random()*500 }).onfinish = () => p.remove();
             }
         }
     </script>
