@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Idul Fitri 2026 - Masterpiece</title>
+    <style>
+    :root {
+        --primary: #064e3b;
+        --accent: #d4af37;
+        --white: #ffffff;
+    }
+
+    body, html {
+        margin: 0; padding: 0;
+        height: 100%; width: 100%;
+        display: flex; justify-content: center; align-items: center;
+        font-family: 'Poppins', sans-serif;
+        overflow: hidden;
+        /* BACKGROUND DENGAN POLA TEBAL */
+        background-color: #022c22;
+        background-image: 
+            radial-gradient(circle at center, rgba(6, 78, 59, 0.4) 0%, #022c22 100%),
+            url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 0l3 10 10 3-10 3-3 10-3-10-10-3 10-3 3-10z' fill='%23d4af37' fill-opacity='0.15'/%3E%3C/svg%3E");
+        background-size: cover, 60px 60px;
+    }
+
+    /* MENAMBAHKAN EFEK LAMPION DI POJOK (CSS MURNI) */
+    body::before, body::after {
+        content: "🏮";
+        position: absolute;
+        top: -10px;
+        font-size: 50px;
+        animation: swing 3s ease-in-out infinite alternate;
+        filter: drop-shadow(0 0 10px var(--accent));
+    }
+    body::before { left: 10%; transform-origin: top; }
+    body::after { right: 10%; transform-origin: top; }
+
+    @keyframes swing {
+        from { transform: rotate(-10deg); }
+        to { transform: rotate(10deg); }
+    }
+
+    .bg-fixed { display: none; }
+
+    .wrapper {
+        position: relative;
+        width: 600px; height: 400px;
+        perspective: 2000px;
+        cursor: pointer;
+        z-index: 10;
+    }
+
+    .envelope {
+        position: relative; width: 100%; height: 100%;
+        background: var(--primary);
+        border-radius: 0 0 20px 20px;
+        box-shadow: 0 40px 80px rgba(0,0,0,0.8);
+        border: 2px solid rgba(212, 175, 55, 0.3); /* Border emas dipertebal */
+    }
+
+    .flap {
+        position: absolute; top: 0; width: 0; height: 0;
+        border-left: 300px solid transparent;
+        border-right: 300px solid transparent;
+        border-top: 200px solid #086d51;
+        transform-origin: top;
+        transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 4;
+    }
+
+    .pocket {
+        position: absolute; top: 0; width: 100%; height: 100%;
+        background: var(--primary);
+        clip-path: polygon(0 0, 50% 55%, 100% 0, 100% 100%, 0 100%);
+        z-index: 3;
+        border-radius: 0 0 20px 20px;
+        border-bottom: 2px solid var(--accent);
+    }
+
+    .card {
+        position: absolute; top: 30px; left: 5%;
+        width: 90%; height: 350px;
+        background: var(--white);
+        border-radius: 15px;
+        z-index: 2;
+        transition: all 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        display: flex; flex-direction: column; align-items: center;
+        padding: 40px; box-sizing: border-box;
+        text-align: center;
+        border: 1px solid #ddd;
+    }
+
+    .card img {
+        width: 130px; height: 130px;
+        border-radius: 50%;
+        border: 4px solid var(--accent);
+        object-fit: cover;
+        margin-bottom: 20px;
+    }
+
+    .wrapper.open .flap { transform: rotateX(180deg); z-index: 1; }
+    .wrapper.open .card {
+        transform: translateY(-320px);
+        height: 580px;
+        z-index: 5;
+    }
+
+    .hint { 
+        position: absolute; bottom: -80px; width: 100%; text-align: center; 
+        color: var(--accent); font-weight: bold; font-size: 22px;
+        text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+    }
+</style>
+</head>
+<body>
+
+    <div class="bg-fixed"></div>
+    
+    <audio id="lebaranMusic" loop>
+        <source src="takbiran.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="wrapper" id="mainWrapper">
+        <div class="flap"></div>
+        <div class="envelope"></div>
+        <div class="card">
+            <img src="FOTO_KAMU.jpg" alt="Foto Kamu">
+            <h1 style="color: var(--primary); margin: 0; font-size: 28px;">Selamat Idul Fitri</h1>
+            <h2 style="color: var(--accent); margin: 0; font-size: 22px;">1447 Hijriah</h2>
+            <p style="font-size: 16px; color: #444; margin-top: 20px; line-height: 1.5;">
+                Taqabbalallahu Minna Wa Minkum.<br>
+                Semoga di tahun 2026 ini kita diberkahi kebahagiaan, kesehatan, dan hati yang kembali suci.
+            </p>
+            <p style="font-weight: bold; color: var(--primary); margin-top: 25px;">Mohon Maaf Lahir & Batin</p>
+            <p style="font-size: 24px; color: #064e3b; margin-top: 30px; font-weight: bold;">
+            ✨ Muhammad Afrizal ✨
+</p>
+        </div>
+        <div class="pocket"></div>
+        <div class="hint">KLIK AMPLOP UNTUK MEMBUKA ✨</div>
+    </div>
+
+    <script>
+    const wrapper = document.getElementById('mainWrapper');
+    const audio = document.getElementById('lebaranMusic');
+    let isOpen = false;
+
+    wrapper.addEventListener('click', () => {
+        wrapper.classList.toggle('open');
+        isOpen = !isOpen;
+
+        if (isOpen) {
+            audio.play().catch(e => console.log("Audio play blocked."));
+            // Jalankan kembang api beberapa kali untuk efek meriah
+            launchFirework();
+            setTimeout(launchFirework, 300);
+            setTimeout(launchFirework, 600);
+        } else {
+            audio.pause();
+            audio.currentTime = 0;
+        }
+    });
+
+    function launchFirework() {
+        const colors = ['#ff0000', '#ffd700', '#00ff00', '#00ffff', '#ff00ff', '#ffffff'];
+        const particleCount = 50;
+        
+        // Titik ledakan (tengah layar)
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.style.position = 'fixed';
+            particle.style.width = '6px';
+            particle.style.height = '6px';
+            particle.style.borderRadius = '50%';
+            particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            particle.style.zIndex = '1000';
+            particle.style.left = centerX + 'px';
+            particle.style.top = centerY + 'px';
+            
+            // Memberikan efek cahaya pada partikel
+            particle.style.boxShadow = `0 0 10px ${particle.style.backgroundColor}`;
+            
+            document.body.appendChild(particle);
+
+            // Menghitung arah ledakan acak (360 derajat)
+            const angle = Math.random() * Math.PI * 2;
+            const velocity = Math.random() * 200 + 100; // Kekuatan ledakan
+            const destinationX = Math.cos(angle) * velocity * 2;
+            const destinationY = Math.sin(angle) * velocity * 2;
+
+            const animation = particle.animate([
+                { 
+                    transform: 'translate(0, 0) scale(1)', 
+                    opacity: 1 
+                },
+                { 
+                    transform: `translate(${destinationX}px, ${destinationY}px) scale(0)`, 
+                    opacity: 0 
+                }
+            ], {
+                duration: 1500 + Math.random() * 1000,
+                easing: 'cubic-bezier(0, .9, .57, 1)'
+            });
+
+            animation.onfinish = () => particle.remove();
+        }
+    }
+</script>
+</body>
+</html>
