@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Idul Fitri 2026 - Masterpiece</title>
     <style>
     :root {
@@ -11,63 +11,58 @@
         --white: #ffffff;
     }
 
+    /* PERBAIKAN RESPONSIVE UTAMA */
     body, html {
         margin: 0; padding: 0;
         height: 100%; width: 100%;
         display: flex; justify-content: center; align-items: center;
         font-family: 'Poppins', sans-serif;
         overflow: hidden;
-        /* BACKGROUND DENGAN POLA TEBAL */
         background-color: #022c22;
         background-image: 
             radial-gradient(circle at center, rgba(6, 78, 59, 0.4) 0%, #022c22 100%),
             url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 0l3 10 10 3-10 3-3 10-3-10-10-3 10-3 3-10z' fill='%23d4af37' fill-opacity='0.15'/%3E%3C/svg%3E");
         background-size: cover, 60px 60px;
+        touch-action: manipulation; /* Biar enak di-tap di HP */
     }
 
-    /* MENAMBAHKAN EFEK LAMPION DI POJOK (CSS MURNI) */
-    body::before, body::after {
-        content: "🏮";
-        position: absolute;
-        top: -10px;
-        font-size: 50px;
-        animation: swing 3s ease-in-out infinite alternate;
-        filter: drop-shadow(0 0 10px var(--accent));
-    }
-    body::before { left: 10%; transform-origin: top; }
-    body::after { right: 10%; transform-origin: top; }
-
-    @keyframes swing {
-        from { transform: rotate(-10deg); }
-        to { transform: rotate(10deg); }
-    }
-
-    .bg-fixed { display: none; }
-
+    /* Wrapper Amplop agar Fleksibel */
     .wrapper {
         position: relative;
-        width: 600px; height: 400px;
+        width: 90%; /* Pakai persen agar ngikutin lebar layar HP */
+        max-width: 450px; /* Batas maksimal biar nggak kegedean di tablet */
+        aspect-ratio: 3 / 2; /* Biar proporsi amplop tetap sama */
         perspective: 2000px;
         cursor: pointer;
         z-index: 10;
+        transition: transform 0.3s;
     }
 
     .envelope {
         position: relative; width: 100%; height: 100%;
         background: var(--primary);
-        border-radius: 0 0 20px 20px;
-        box-shadow: 0 40px 80px rgba(0,0,0,0.8);
-        border: 2px solid rgba(212, 175, 55, 0.3); /* Border emas dipertebal */
+        border-radius: 0 0 15px 15px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        border: 1px solid rgba(212, 175, 55, 0.3);
     }
 
     .flap {
         position: absolute; top: 0; width: 0; height: 0;
-        border-left: 300px solid transparent;
-        border-right: 300px solid transparent;
-        border-top: 200px solid #086d51;
+        border-left: 45vw solid transparent; /* Ukuran dinamis sesuai lebar layar */
+        border-right: 45vw solid transparent;
+        border-top: 30vw solid #086d51;
         transform-origin: top;
         transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
         z-index: 4;
+    }
+
+    /* Batas flap untuk layar lebar */
+    @media (min-width: 500px) {
+        .flap {
+            border-left: 225px solid transparent;
+            border-right: 225px solid transparent;
+            border-top: 150px solid #086d51;
+        }
     }
 
     .pocket {
@@ -75,43 +70,52 @@
         background: var(--primary);
         clip-path: polygon(0 0, 50% 55%, 100% 0, 100% 100%, 0 100%);
         z-index: 3;
-        border-radius: 0 0 20px 20px;
-        border-bottom: 2px solid var(--accent);
+        border-radius: 0 0 15px 15px;
     }
 
     .card {
-        position: absolute; top: 30px; left: 5%;
-        width: 90%; height: 350px;
+        position: absolute; top: 10%; left: 5%;
+        width: 90%; height: 85%;
         background: var(--white);
-        border-radius: 15px;
+        border-radius: 10px;
         z-index: 2;
         transition: all 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         display: flex; flex-direction: column; align-items: center;
-        padding: 40px; box-sizing: border-box;
+        padding: 20px; box-sizing: border-box;
         text-align: center;
-        border: 1px solid #ddd;
+        overflow: hidden;
     }
 
     .card img {
-        width: 130px; height: 130px;
+        width: 80px; height: 80px; /* Perkecil sedikit buat HP */
         border-radius: 50%;
-        border: 4px solid var(--accent);
+        border: 3px solid var(--accent);
         object-fit: cover;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
     }
 
+    /* Saat Amplop Dibuka di HP */
     .wrapper.open .flap { transform: rotateX(180deg); z-index: 1; }
     .wrapper.open .card {
-        transform: translateY(-320px);
-        height: 580px;
+        transform: translateY(-55%); /* Kartu naik setengah badan saja di HP */
+        height: 180%; /* Kartu memanjang keluar */
         z-index: 5;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        padding-top: 30px;
     }
 
+    /* Sesuaikan ukuran font biar pas di layar kecil */
+    .card h1 { font-size: 20px; margin: 5px 0; }
+    .card h2 { font-size: 16px; margin: 0; }
+    .card p { font-size: 13px; line-height: 1.4; }
+
     .hint { 
-        position: absolute; bottom: -80px; width: 100%; text-align: center; 
-        color: var(--accent); font-weight: bold; font-size: 22px;
-        text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        position: absolute; bottom: -50px; width: 100%; text-align: center; 
+        color: var(--accent); font-weight: bold; font-size: 14px;
     }
+
+    /* Lampion dikecilin di HP */
+    body::before, body::after { font-size: 30px; }
 </style>
 </head>
 <body>
